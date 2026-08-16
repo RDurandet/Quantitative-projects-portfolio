@@ -10,7 +10,7 @@ detector hits in a four-detector geometry. <br>
 linear track regression, uncertainty propagation, numerical integration,
 parallel computing, and validation.
 
-## |__ Solar Power Forecasting with GA-VMD-LSTM
+### |__ Solar Power Forecasting with GA-VMD-LSTM
 Physics-informed time-series forecasting of rooftop photovoltaic power across
 single and heterogeneous multi-station settings. <br>
 **Key areas:** LSTM sequence modelling, variational mode decomposition,
