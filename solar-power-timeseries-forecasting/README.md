@@ -38,24 +38,24 @@ $53\%$ RMSE reduction ($2383 \to 1122$), $51\%$ MAE reduction ($1258 \to 618$), 
 
 ## Models
 
-# Baseline single-station LSTM
+### Baseline single-station LSTM
 - 2‑layer stacked LSTM (hidden size 64) feeding a 2‑layer fully‑connected head with intermediate ReLU for direct multi‑step prediction (24‑hour horizon) without autoregressive roll‑out.
 - Uses dropout of 0.2 between LSTM layers and 0.1 in the FC head to control overfitting while preserving learned sequence structure.
 - Trains with MSE loss (quadratic penalty on large errors), Adam optimiser, ReduceLROnPlateau scheduler (LR  $0.001$ with floor $1\times 10^{-4}$) and early stopping on validation loss.
 
-# GA-VMD-LSTM Ensemble
+### GA-VMD-LSTM Ensemble
 - Applies Variational Mode Decomposition to split the power signal into $K$ band‑limited intrinsic mode functions (IMFs) plus a residual, each centred on a distinct frequency band. VMD was chosen over EMD to avoid mode mixing.
 - Optimises VMD hyperparameters ($K,\alpha$) via a genetic algorithm on the training set, using mean envelope entropy as the fitness function to favour clean, well‑separated modes; converges to $K=7, \alpha = 100$ for the main station (SQ19).
 - Trains $K+1$ IMF‑specific LSTMs with capacity allocated by frequency: deeper, larger models for low‑frequency components (seasonality, diurnal cycles) and lighter models for high‑frequency weather transients; sums IMF predictions to reconstruct total power.
 
-# Generalised multi-station LSTM
+### Generalised multi-station LSTM
 - Extends the baseline architecture to all stations by feeding static metadata through a small linear network with tanh activation, then using the resulting embedding to initialise $h_0$ and $c_0$ for all LSTM layers.
 - This seeds the LSTM’s memory with station identity before time‑varying inputs arrive, preventing conflation of static and dynamic information.
 - Uses AdamW for decoupled weight decay, higher dropout ($0.4$ between LSTM layers), adjusted LR scheduling, and longer early‑stopping patience to manage the more complex, heterogeneous multi‑station setting.
 
 ## Results
 
-# Single-station horizon forecasting (SQ19, 48h lookback / 24h horizon)
+### Single-station horizon forecasting (SQ19, 48h lookback / 24h horizon)
 - Baseline LSTM: aggregate RMSE $2383$, MAE $1258$, $R^2 = 0.81$. <br> 
 Performance drops sharply beyond short horizons and plateaus near mean prediction.
 - GA-VMD-LSTM Ensemble: aggregate RMSE $1122$, MAE $618$, $R^2 = 0.96$. <br>
@@ -63,15 +63,15 @@ Reduces unexplained variance fraction ($1-R^2$) from $19.2\%$ to $4.3\%$ ($78\%$
 - Short horizons: GA-VMD-LSTM maintains $R^2>0.98$ through $t+8$, while baseline LSTM falls below 0.8 by that point.
 - Per-IMF models: low‑frequency modes are highly predictable ($R^2>0.96$); high‑frequency modes show lower $R^2$, reflecting inherent randomness in rapid weather transients.
 
-# Multi-station next-hour forecasting
+### Multi-station next-hour forecasting
 - Generalised LSTM overall metrics: $R^2 = 0.9603$, capacity‑scaled RMSE $= 0.0368$ across 57 stations.
 - Per‑station $R^2$ ranges from $0.81$ (data‑scarce stations) to $0.99$ (homogeneous SQ cluster), demonstrating strong generalisation conditioned on station metadata and capacity scaling.
 
-# Lookback-horizon trade-off
+### Lookback-horizon trade-off
 - Increasing lookback beyond a full diurnal cycle offers limited benefit for horizons $h\leq 12$ hours, and can degrade performance for $h=24$ as long histories dilute sensitivity to recent weather.
 - For very long horizons (e.g. 48h), both models plateau in $R^2$, indicating that forecast accuracy becomes limited by the inherent predictability of meteorological inputs rather than model capacity.
 
-# Limitations and extensions
+## Limitations and extensions
 - Baseline and generalised LSTMs struggle to fully capture multi‑scale PV dynamics without VMD, showing weak validation‑loss convergence.
 - GA‑VMD‑LSTM requires per‑station decomposition and multiple sub‑models, which increases computational cost and complexity of deployment.
 - Natural extension: perform station‑specific VMD with GA‑optimised ($K,\alpha$) then train a shared multi‑station ensemble on the first $N$ low‑frequency IMFs while aggregating remaining high‑frequency modes into a residual channel.
