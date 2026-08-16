@@ -9,8 +9,11 @@ $53\%$ RMSE reduction ($2383 \to 1122$), $51\%$ MAE reduction ($1258 \to 618$), 
 
 ## Environment
 - Python 3.11
-- Core libraries: 
-(found here: https://datadryad.org/dataset/doi:10.5061/dryad.m37pvmd99)
+- Core libraries: pandas; numpy; matplotlib; glob; pathlib; re; pvlib; scipy; vmdpy; sklearn; torch; pytorch_forecasting; lightning.pytorch.
+
+## How to run
+- The jupyter notebook PV-forecasting-project.ipynb reproduces all reported preprocessing, training, and evaluation results.
+- The necessary data sets are found at: https://datadryad.org/dataset/doi:10.5061/dryad.m37pvmd99.
 
 ## Motivation and problem
 - **Goal**: train physically-grounded timeseries models that can forecast PV power from local weather data and PV power from a set lookback window.
