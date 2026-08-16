@@ -2,7 +2,11 @@
 This project simulates a high-energy physics lifetime-measurement experiment using a Monte Carlo model of particle decays and a segmented detector array. Gaussian detector error is added to simulate detector mismeasurement. The pipeline then reconstructs decay vertices using recorded detector hits, accounts for geometric biases, and fits an analytically-derived geometric probability density function (PDF) to recover the mean lifetime. The analysis recovers the mean lifetime within $0.96\sigma$ of the true input, with uncertainties propagated explicitly and key steps cross‑checked against independent analytic calculations.
 
 ## Environment
-- Python
+- Python 3.11
+- Core libraries: numpy; pandas; time; asyncio; sys; ipyparallel; matplotlib; scipy; Ipython.display; gc.
+
+## How to run
+All content is self-contained in 
 
 ## Motivation and problem
 **Goal**: measure the mean lifetime of an unstable particle from detector data in a realistic geometry with finite acceptance and detector smearing. <br>
