@@ -1,5 +1,8 @@
 ## Project Summary
-This project simulates a high-energy physics lifetime-measurement experiment using a Monte Carlo model of particle decays and a segmented detector array. Gaussian detector error is added to simulate detector mismeasurement. This project then reconstructs decay vertices using recorded detector hits, accounts for geometric biases, and fits an analytically-derived geometric probability density function (PDF) to recover the mean lifetime. Overall the analysis achieved a lifetime estimate within $0.96\sigma$ of the true input parameter, including uncertainty calculations and each step validated against independent analytical calculations.
+This project simulates a high-energy physics lifetime-measurement experiment using a Monte Carlo model of particle decays and a segmented detector array. Gaussian detector error is added to simulate detector mismeasurement. The pipeline then reconstructs decay vertices using recorded detector hits, accounts for geometric biases, and fits an analytically-derived geometric probability density function (PDF) to recover the mean lifetime. The analysis recovers the mean lifetime within $0.96\sigma$ of the true input, with uncertainties propagated explicitly and key steps cross‑checked against independent analytic calculations.
+
+## Environment
+- Python
 
 ## Motivation and problem
 **Goal**: measure the mean lifetime of an unstable particle from detector data in a realistic geometry with finite acceptance and detector smearing. <br>
@@ -12,7 +15,7 @@ This project simulates a high-energy physics lifetime-measurement experiment usi
 - Uses seeded random number generation to guarantee full reproducibility of velocity, lifetime, direction, and smearing draws across runs.
 
 ## Performance and parallelisation
-- Implements embarrassingly parallel event generation with `ipyparallel` in Jupyter, distributing batches of events across multiple cores.
+- Runs embarrassingly parallel event generation with `ipyparallel` in Jupyter, distributing batches of events across multiple cores.
 - Optimised data transfer by only serialising hit‑related coordinates; avoids pickling $\sim1.2\text{GB}$ of redundant data for $10^7$ no-hit particles.
 
 ## Detector Modelling and data handling
@@ -25,6 +28,7 @@ This project simulates a high-energy physics lifetime-measurement experiment usi
 - Restricts reconstruction to particles that hit all detectors, trading sample size for improved fit stability and reduced bias.
 - Derives the decay‑position PDF by convolving a Gaussian velocity distribution with an exponential lifetime distribution and fits this to the geometrically normalised histogram.
 - Evaluates the convolution integral using adaptive quadrature (`scipy.integrate.quad`), chosen for robust error control and efficiency on smooth integrands.
+- Histogram binning is chosen to balance geometric normalisation and statistical uncertainty (e.g. 250 bins in decay‑position space), and the lifetime fit is evaluated under this trade‑off.
 
 ## Key results
 - Lifetime estimate: $\tau_\text{fit} = 2.52 \pm 0.02$ms vs true $\tau = 2.50$ms, corresponding to a $0.96\sigma$ deviation.
