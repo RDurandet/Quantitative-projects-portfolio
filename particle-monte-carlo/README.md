@@ -6,7 +6,7 @@ This project simulates a high-energy physics lifetime-measurement experiment usi
 - Core libraries: numpy; pandas; time; asyncio; sys; ipyparallel; matplotlib; scipy; Ipython.display; gc.
 
 ## How to run
-All content is self-contained in 
+All content is self-contained in Particle-monte-carlo-project.ipynb. Cell 3 under the Preamble header contains all configuration settings.
 
 ## Motivation and problem
 **Goal**: measure the mean lifetime of an unstable particle from detector data in a realistic geometry with finite acceptance and detector smearing. <br>
