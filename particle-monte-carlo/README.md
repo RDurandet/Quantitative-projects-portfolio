@@ -1,5 +1,5 @@
 ## Project Summary
-This project simulates a high-energy physics lifetime-measurement experiment using a Monte Carlo model. It explores the effect of geometry and hit smearing on the reconstruction of an initial distribution of particle lifetimes. Particles are independently sampled from chosen distributions, each allocated a speed and a lifetime, and undergo a decay where the daughter particle fires in a random direction from the decay position (sampled uniformly across a sphere's surface). An array of detectors measures whether each particle hits, with gaussian detector error is added to simulate this detector mismeasurement. The simulated experiment then reconstructs decay vertices using recorded detector hits, accounts for geometric biases, and fits an analytically-derived geometric probability density function (PDF) to recover the mean lifetime. The analysis recovers the mean lifetime within $0.96\sigma$ of the true input, with uncertainties propagated explicitly and key steps cross‑checked against independent analytic calculations.
+This project simulates a high-energy physics lifetime-measurement experiment using a Monte Carlo model. It explores how detector geometry and hit smearing affect the reconstruction of an initially specified particle-lifetime distribution. Particles are independently sampled from chosen distributions, each allocated a speed and a lifetime, and undergo a decay where the daughter particle fires in a random direction from the decay position (sampled uniformly across a sphere's surface). An array of detectors measures whether each particle hits, with Gaussian detector error is added to simulate this detector mismeasurement. The simulated experiment then reconstructs decay vertices using recorded detector hits, accounts for geometric biases, and fits an analytically-derived geometric probability density function (PDF) to recover the mean lifetime. The analysis recovers the mean lifetime within $0.96\sigma$ of the true input, with uncertainties propagated explicitly and key steps cross‑checked against independent analytic calculations.
 
 ## Environment
 - Python 3.11
@@ -9,7 +9,7 @@ This project simulates a high-energy physics lifetime-measurement experiment usi
 All content is self-contained in Particle-monte-carlo-project.ipynb. Cell 3 under the Preamble header contains all configuration settings.
 
 ## Motivation and problem
-**Experiment goal**: to measure the mean lifetime of an decaying particle from detector data in a realistic geometry with finite acceptance and detector smearing. <br>
+**Experiment goal**: to measure the mean lifetime of a decaying particle from detector data in a realistic geometry with finite acceptance and detector smearing. <br>
 **Challenges addressed**: geometrically biased detector acceptance, sparse hits per particle, regression uncertainty, and geometric normalisation of reconstructed decay positions.
 
 ## Simulation and numerical methods
