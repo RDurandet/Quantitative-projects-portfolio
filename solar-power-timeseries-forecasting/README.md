@@ -1,11 +1,16 @@
 ## Project Summary
-This project forecasts rooftop photovoltaic (PV) power generation using sequence models and physics-motivated feature engineering on a three-year, multi station Hong Kong PV and weather dataset (found here: https://datadryad.org/dataset/doi:10.5061/dryad.m37pvmd99). It implements and compares three approaches:
+This project forecasts rooftop photovoltaic (PV) power generation using sequence models and physics-motivated feature engineering on a three-year, multi station Hong Kong PV and weather dataset. It implements and compares three approaches:
 - A baseline single‑station LSTM for 24‑hour horizon forecasting.
 - A single-station GA-VMD-LSTM ensemble for 24-hour forecasting. This used Variational Mode Decomposition (VMD) --- optimised using a Genetic Algorithm (GA) --- to decompose power signals into intrinsic mode functions (IMFs), such that the sum of IMFs and a residual term summed to the total PV power of the timestep. Thus, an LSTM was trained to forecast each IMF, giving a GA-VMD-LSTM ensemble.
 - A generalised multi-station LSTM that uses station metadata to forecast the next hour across 57 different PV stations.
 
 On the main single‑station task, the GA‑VMD‑LSTM achieves a
 $53\%$ RMSE reduction ($2383 \to 1122$), $51\%$ MAE reduction ($1258 \to 618$), and a $R^2$ improvement from $0.81$ to $0.96$ over the baseline LSTM over hourly 24-hour forecasts. The generalised model attains an average of $R^2 = 0.96$ for next-hour forecasting across 57 stations, with per-station $R^2$ as high as $0.99$.
+
+## Environment
+- Python 3.11
+- Core libraries: 
+(found here: https://datadryad.org/dataset/doi:10.5061/dryad.m37pvmd99)
 
 ## Motivation and problem
 - **Goal**: train physically-grounded timeseries models that can forecast PV power from local weather data and PV power from a set lookback window.
@@ -47,8 +52,26 @@ $53\%$ RMSE reduction ($2383 \to 1122$), $51\%$ MAE reduction ($1258 \to 618$), 
 
 ## Results
 
-#Single-station horizon forecasting (SQ19, 48h lookback / 24h horizon)
-- 
+# Single-station horizon forecasting (SQ19, 48h lookback / 24h horizon)
+- Baseline LSTM: aggregate RMSE $2383$, MAE $1258$, $R^2 = 0.81$. <br> 
+Performance drops sharply beyond short horizons and plateaus near mean prediction.
+- GA-VMD-LSTM Ensemble: aggregate RMSE $1122$, MAE $618$, $R^2 = 0.96$. <br>
+Reduces unexplained variance fraction ($1-R^2$) from $19.2\%$ to $4.3\%$ ($78\%$ reduction).
+- Short horizons: GA-VMD-LSTM maintains $R^2>0.98$ through $t+8$, while baseline LSTM falls below 0.8 by that point.
+- Per-IMF models: low‑frequency modes are highly predictable ($R^2>0.96$); high‑frequency modes show lower $R^2$, reflecting inherent randomness in rapid weather transients.
+
+# Multi-station next-hour forecasting
+- Generalised LSTM overall metrics: $R^2 = 0.9603$, capacity‑scaled RMSE $= 0.0368$ across 57 stations.
+- Per‑station $R^2$ ranges from $0.81$ (data‑scarce stations) to $0.99$ (homogeneous SQ cluster), demonstrating strong generalisation conditioned on station metadata and capacity scaling.
+
+# Lookback-horizon trade-off
+- Increasing lookback beyond a full diurnal cycle offers limited benefit for horizons $h\leq 12$ hours, and can degrade performance for $h=24$ as long histories dilute sensitivity to recent weather.
+- For very long horizons (e.g. 48h), both models plateau in $R^2$, indicating that forecast accuracy becomes limited by the inherent predictability of meteorological inputs rather than model capacity.
+
+# Limitations and extensions
+- Baseline and generalised LSTMs struggle to fully capture multi‑scale PV dynamics without VMD, showing weak validation‑loss convergence.
+- GA‑VMD‑LSTM requires per‑station decomposition and multiple sub‑models, which increases computational cost and complexity of deployment.
+- Natural extension: perform station‑specific VMD with GA‑optimised ($K,\alpha$) then train a shared multi‑station ensemble on the first $N$ low‑frequency IMFs while aggregating remaining high‑frequency modes into a residual channel.
 
 
 
