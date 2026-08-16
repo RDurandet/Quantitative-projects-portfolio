@@ -78,10 +78,3 @@ Reduces unexplained variance fraction ($1-R^2$) from $19.2\%$ to $4.3\%$ ($78\%$
 
 
 
-
-
-
-
-
-
-
