@@ -17,6 +17,6 @@ single and heterogeneous multi-station settings. <br>
 genetic-algorithm optimisation, multi-step forecasting, feature engineering,
 time-series validation, leakage prevention, and model comparison.
 
-### |__ Invisible Higgs Decay Search with Particle Transformers
+### |__ Identifying Decays of the Higgs Boson to Dark Matter at the Large Hadron Collider with Machine Learning Algorithms
 Event-level machine learning analysis of simulated \(t\bar{t}H\) events to identify invisible Higgs-boson decays and estimate projected branching-fraction sensitivity. <br>
 **Key areas:** Particle Transformers, self-attention, collider-physics simulation, multiclass classification, representation learning, statistical inference, profile-likelihood significance, decorrelation, and physics-based validation.
